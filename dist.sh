@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 rm -R build 2>/dev/null
 mkdir "build"
+cp ./src/node_modules/emoji.json/emoji.json ./build/emoji.json
 cp -R ./src/*.* ./src/icons/ ./build/
 rm ./build/icons/*.psd
 cd ./build/

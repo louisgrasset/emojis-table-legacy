@@ -1,0 +1,23 @@
+{
+  "name": "emojis-table",
+  "version": "1.0.0",
+  "description": "Get the right emojis from your browser in any tab!",
+  "main": "options.js",
+  "dependencies": {
+    "emoji.json": "^11.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/louisgrasset/emojis-table.git"
+  },
+  "author": "Louis Grasset",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://gitlab.com/louisgrasset/emojis-table/issues"
+  },
+  "homepage": "https://gitlab.com/louisgrasset/emojis-table#readme"
+}
