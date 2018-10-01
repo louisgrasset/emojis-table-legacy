@@ -13,24 +13,15 @@ const showBadge = () => {
     document.querySelector("#badge").classList.add('active');
 };
 
-const copyEmoji = function (emoji) {
-    document.querySelector('.clipboard').value = emoji.innerHTML;
-    document.querySelector('.clipboard').innerHTML.select((e)=> {
-        e.preventDefault()
-    });/*
-    document.execCommand('copy');*/
-};
-
 const showEmojis = (container) => {
     setTimeout(() => {
         document.querySelectorAll(`${container} .emoji`).forEach((emoji) => {
             emoji.classList.remove('scaleDown');
             emoji.addEventListener('click', () => {
-                console.log(emoji.innerHTML);
                 document.querySelector('.clipboard').value = emoji.innerHTML;
-                console.log(document.querySelector('.clipboard').value);
                 document.querySelector('.clipboard').select();
                 document.execCommand('copy');
+                showBadge()
             })
         });
     }, 50)
@@ -49,11 +40,11 @@ const fetchEmojis = () => {
             emojisRankLimit = emojiList.length;
             processEmojis(0, 119);
             emojiList.forEach(emoji => {
-                emojisNames.push(emoji.name);
+                emojisNames.push(emoji.name + emoji.keywords);
             });
         })
         .then(() => {
-            document.querySelector('input').placeholder = emojisNames[Math.floor(Math.random() * emojisNames.length)]
+            document.querySelector('input').placeholder = emojis[Math.floor(Math.random() * emojis.length)]['name']
         })
         .catch(error => {
             console.error(error);
@@ -74,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     documentHeight = document.documentElement.clientHeight;
     let input = document.querySelector('input');
     input.addEventListener('keyup', (event) => {
-
+        document.querySelector('body').scrollIntoView({behavior: 'smooth'});
         if (event.key === "Enter") {
             return;
         }
