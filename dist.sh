@@ -2,6 +2,7 @@
 rm -R build 2>/dev/null
 mkdir "build"
 cp ./src/node_modules/emoji.json/emoji.json ./build/emoji.json
+cp ./src/node_modules/smoothscroll-polyfill/dist/smoothscroll.min.js ./build/smoothscroll.js
 cp -R ./src/*.* ./src/icons/ ./build/
 rm ./build/icons/*.psd
 cd ./build/
