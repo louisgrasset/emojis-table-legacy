@@ -29,5 +29,13 @@
     "chrome_style": true
   },
 
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+X"
+      }
+    }
+  },
+
   "author": "Louis Grasset <hello@louisgrasset.fr> (louisgrasset.fr)"
 }
