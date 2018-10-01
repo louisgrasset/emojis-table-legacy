@@ -4,7 +4,8 @@
   "description": "Get the right emojis from your browser in any tab!",
   "main": "options.js",
   "dependencies": {
-    "emoji.json": "^11.0.0"
+    "emoji.json": "^11.0.0",
+    "smoothscroll-polyfill": "^0.4.3"
   },
   "devDependencies": {},
   "scripts": {
