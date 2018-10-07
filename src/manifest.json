@@ -11,7 +11,7 @@
       "16": "./icons/icon-16.png",
       "32": "./icons/icon-32.png"
     },
-    "default_title": "Get the right emojis from your browser in any tab!",
+    "default_title": "Emojis Table",
     "default_popup": "popup.html"
   },
 
