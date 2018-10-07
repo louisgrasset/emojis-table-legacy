@@ -1,13 +1,20 @@
+let lastCounterUsed;
 let positionFromTop;
 let documentHeight;
 
-let emojisPerScroll = 6;
-
-let emojisAlreadyLoaded = 0;
 let scrollHistory = 0;
 let emojisRankLimit = 0;
 let emojis = "";
 let emojisNames = [];
+
+const createEmojis = (emojis) => {
+    let row = document.createElement('div');
+    row.classList = "row";
+    emojis.forEach((emoji) => {
+        row.innerHTML += `<div class='emoji'>${emoji}</div>`;
+    });
+    document.querySelector(".emojis.list").appendChild(row)
+};
 
 const showBadge = () => {
     document.querySelector("#badge").classList.add('active');
@@ -24,44 +31,10 @@ const showEmojis = (container) => {
                 showBadge()
             })
         });
-    }, 50)
+    })
 };
 
-const fetchEmojis = () => {
-    return fetch(new Request("emoji.json"), {mode: "same-origin"})
-        .then(emojiList => {
-            if (emojiList.ok) {
-                return emojiList.json()
-            }
-            throw new Error("Failed to fetch emojis")
-        })
-        .then(emojiList => {
-            emojis = emojiList;
-            emojisRankLimit = emojiList.length;
-            processEmojis(0, 119);
-            emojiList.forEach(emoji => {
-                emojisNames.push(emoji.name + emoji.keywords);
-            });
-        })
-        .then(() => {
-            document.querySelector('input').placeholder = emojis[Math.floor(Math.random() * emojis.length)]['name']
-        })
-        .catch(error => {
-            console.error(error);
-        });
-};
-
-const processEmojis = (minRank, maxRank) => {
-    let preparedEmojis = '';
-    for (let index = minRank; index <= maxRank && maxRank <= emojisRankLimit; index++) {
-        preparedEmojis += `<div class="emoji scaleDown">${emojis[index]['char']}</div>`;
-    }
-    emojisAlreadyLoaded = maxRank;
-    document.querySelector('.emojis').innerHTML += preparedEmojis;
-    showEmojis('.list');
-};
-
-document.addEventListener('DOMContentLoaded', () => {
+const onLoad = () => {
     documentHeight = document.documentElement.clientHeight;
     let input = document.querySelector('input');
     input.addEventListener('keyup', (event) => {
@@ -97,18 +70,60 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('body').classList.remove('overflow-hidden');
         }
     });
+};
 
-});
-
-document.addEventListener('scroll', () => {
+const onScroll = () => {
     positionFromTop = this.scrollY;
-    let scrollCurrent = (Math.floor(positionFromTop / 50));
+    let scrollCurrent = (Math.floor(positionFromTop / 300));
     if (scrollCurrent > scrollHistory) {
-        let scrollDifference = scrollCurrent - scrollHistory;
         scrollHistory = scrollCurrent;
-        processEmojis(emojisAlreadyLoaded + 1, emojisAlreadyLoaded + scrollDifference * emojisPerScroll);
+        let counterTmp;
+        for (let counter = lastCounterUsed + 1; counter < lastCounterUsed + 8; counter++) {
+            let array = [];
+            for (let index = (counter * 5) - 5; index <= counter * 5 - 1; index++) {
+                if (emojis[index])
+                    array.push(emojis[index]['char']);
+            }
+            createEmojis(array);
+            counterTmp = counter;
+        }
+        lastCounterUsed = counterTmp;
         showEmojis('.results');
     }
-});
+};
 
+const fetchEmojis = () => {
+    return fetch(new Request("emoji.json"), {mode: "same-origin"})
+        .then(emojiList => {
+            if (emojiList.ok) {
+                return emojiList.json()
+            }
+            throw new Error("Failed to fetch emojis")
+        })
+        .then(emojiList => {
+            emojis = emojiList;
+            emojisRankLimit = emojiList.length;
+
+            for (let counter = 1; counter < 25; counter++) {
+                let array = [];
+                for (let index = (counter * 5) - 5; index <= counter * 5 - 1; index++) {
+                    array.push(emojis[index]['char']);
+                }
+                createEmojis(array);
+                lastCounterUsed = counter;
+            }
+            emojiList.forEach(emoji => {
+                emojisNames.push(emoji.name + emoji.keywords);
+            });
+        })
+        .then(() => {
+            document.querySelector('input').placeholder = emojis[Math.floor(Math.random() * emojis.length)]['name']
+        })
+        .catch(error => {
+            console.error(error);
+        });
+};
+
+document.addEventListener('DOMContentLoaded', onLoad);
+document.addEventListener('scroll', onScroll);
 fetchEmojis();
