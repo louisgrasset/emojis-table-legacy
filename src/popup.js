@@ -7,6 +7,18 @@ let emojisRankLimit = 0;
 let emojis = "";
 let emojisNames = [];
 
+const copyEmojis = (container) => {
+    document.querySelectorAll(`${container} .emoji`).forEach((emoji) => {
+        emoji.classList.remove('scaleDown');
+        emoji.addEventListener('click', () => {
+            document.querySelector('.clipboard').value = emoji.innerHTML;
+            document.querySelector('.clipboard').select();
+            document.execCommand('copy');
+            showBadge()
+        })
+    });
+};
+
 const createEmojis = (emojis) => {
     let row = document.createElement('div');
     row.classList = "row";
@@ -14,10 +26,14 @@ const createEmojis = (emojis) => {
         row.innerHTML += `<div class='emoji'>${emoji}</div>`;
     });
     document.querySelector(".emojis.list").appendChild(row)
+    copyEmojis('.list')
 };
 
 const showBadge = () => {
     document.querySelector("#badge").classList.add('active');
+    setTimeout(() => {
+        document.querySelector("#badge").classList.remove('active');
+    }, 750)
 };
 
 const showEmojis = (container) => {
@@ -40,7 +56,12 @@ const onLoad = () => {
     input.addEventListener('keyup', (event) => {
         document.querySelector('body').scrollIntoView({behavior: 'smooth'});
         if (event.key === "Enter") {
-            return;
+            if (document.querySelectorAll('.emojis.results .emoji').length > 0) {
+                document.querySelector('.clipboard').value = document.querySelectorAll('.emojis.results .emoji')[0].innerHTML;
+                document.querySelector('.clipboard').select();
+                document.execCommand('copy');
+                showBadge();
+            }
         }
 
         if (input.value.length > 0) {
